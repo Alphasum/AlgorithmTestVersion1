@@ -177,7 +177,7 @@ if session_id is not None:
     if st.button("Logout"):
         logout(session_id)
         session_id = None
-left_column,right_column,c2,c3 = st.columns(4)
+left_column,right_column,c1,c2,c3 = st.columns(5)
 with left_column:
     genre = st.radio("Choose A Strategy",('Strategy One', 'Strategy Two','Strategy Three','Strategy Four','Strategy Five','Strategy Six'))
 
@@ -187,6 +187,9 @@ with right_column:
         st.success('This Account Option is available for a limited time only. Terms and Conditions Apply')
     else:    
         st.success("This Account Option is available.")
+with c1:
+    goaloptions=["EURUSD","EURJPY","EURGBP","AUDUSD","AUDJPY","AUDCAD","GBPJPY","GBPUSD","USDJPY"]
+    goal=st.selectbox("Choose Currency Pair", options=goaloptions)
 with c2:
     initialmoney=st.number_input("Start trading at amount of ", min_value=1, max_value=10, step=1, value=1, disabled=False, label_visibility="visible")
     if initialmoney>5:
@@ -246,7 +249,6 @@ if terms =='Agree':
             Iq.change_balance(balance_type)
         Money1=initialmoney #amount per option
         Money2=initialmoney
-        goal="EURUSD"               #Target Instrument
         size=60                     #60 second bars (Timeframe in seconds)
         maxdict=1                   #numbers of bars to get
         expirations_mode=1  
