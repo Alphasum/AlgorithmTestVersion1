@@ -69,16 +69,6 @@ end_date = date.today() + timedelta(days = 5)
 nyse = mcal.get_calendar('NYSE')
 nyse_schedule = nyse.schedule(start_date=start_date, end_date=end_date)
     
-hide_st_style="""
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-@st.cache_data
-    
 def countdown():
     now=datetime.now()
     current_time=int(now.strftime("%S"))
