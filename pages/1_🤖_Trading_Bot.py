@@ -36,9 +36,7 @@ def rsioutcome():
                 return outcome,rsi100,rsi99
                 True
             else:
-                st.write("Running 1")
-                st.write("Running 2")
-                st.write("Running 3")
+                st.write("Running ...")
                 time.sleep(15)
                 False
 
