@@ -25,12 +25,12 @@ def rsioutcome():
             rsi99=(daf.iloc[98][9])
             st.write("rsi100 : ",rsi100)
             st.write("rsi99 : ",rsi99)
-            if rsi100<80 and rsi99>80:
+            if rsi100<70 and rsi99>70:
                 outcome="Sell"
                 st.write("Sell success")
                 return outcome,rsi100,rsi99
                 True
-            elif rsi100>20 and rsi99<20:
+            elif rsi100>30 and rsi99<30:
                 outcome="Buy"
                 st.write("Buy success")
                 return outcome,rsi100,rsi99
