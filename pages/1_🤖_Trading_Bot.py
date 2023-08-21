@@ -150,8 +150,5 @@ else:
                 df = pd.read_csv(f'Data_{email1}_{today}.csv')
                 df3 = pd.concat([df,df2], ignore_index = True)
                 df3.to_csv(f'Data_{email1}_{today}.csv',index=False)
-                df_perc = pd.read_csv(f'Data_{email1}_{today}.csv')
-                netprofit=my_blc2-int(df_perc['Initial_balance'].values[:1])
-                now=datetime.now()
 
                         
