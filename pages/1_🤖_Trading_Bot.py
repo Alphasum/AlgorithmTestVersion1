@@ -100,7 +100,8 @@ else:
             with placeholder.container():
                 end_from_time=time.time()
                 expirations_mode=5
-                outcome,rsimax,rsimin=rsioutcome()               
+                outcome,rsimax,rsimin=rsioutcome()
+                False
                 if outcome=="Sell":
                     check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
                     if check1:
