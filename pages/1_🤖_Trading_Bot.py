@@ -26,14 +26,14 @@ def rsioutcome():
             st.write("rsi100 : ",rsi100)
             st.write("rsi99 : ",rsi99)
             if rsi100<70 and rsi99>70:
-                outcome="Sell"
+                outcome1="Sell"
                 st.write("Sell success")
-                return outcome,rsi100,rsi99
+                return outcome1,rsi100,rsi99
                 True
             elif rsi100>30 and rsi99<30:
-                outcome="Buy"
+                outcome1="Buy"
                 st.write("Buy success")
-                return outcome,rsi100,rsi99
+                return outcome1,rsi100,rsi99
                 True
             else:
                 st.write("Running ...")
@@ -100,7 +100,7 @@ else:
             with placeholder.container():
                 end_from_time=time.time()
                 expirations_mode=5
-                outcome,rsi100,rsi99=rsioutcome()               
+                outcome,rsimax,rsimin=rsioutcome()               
                 if outcome=="Sell":
                     check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
                     if check1:
@@ -142,8 +142,8 @@ else:
                         "time":[current_time],
                         "Initial_balance":[my_blc2],
                         "stake_1":[Money1],
-                        "RSI position 1":[rsi99],
-                        "RSI position 2":[rsi100],
+                        "RSI position 1":[rsimin],
+                        "RSI position 2":[rsimax],
                         "RSI outcome":[outcome],
                         "status_1":[status1],
                         "balance_after_stake":[my_blcafter],"Final_balance":[my_blc2]})
