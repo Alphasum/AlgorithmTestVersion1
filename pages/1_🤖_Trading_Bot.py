@@ -12,8 +12,8 @@ import os
 @st.cache_data
 def rsioutcome():
     placeholder = st.empty()
-    while True:
-        with placeholder.container():
+    with placeholder.container():
+        while True:
             end_from_time=time.time()
             data=Iq.get_candles("EURUSD", 15, 100, end_from_time)
             daf=pd.DataFrame(data)
@@ -96,8 +96,8 @@ else:
     if iqch1==True:
         st.write(f"Log in successful")
         placeholder = st.empty()
-        while True:
-            with placeholder.container():
+         with placeholder.container():
+             while True:           
                 end_from_time=time.time()
                 expirations_mode=5
                 outcome,rsimax,rsimin=rsioutcome()
