@@ -12,9 +12,11 @@ import os
 @st.cache_data
 def rsioutcome():
     placeholder = st.empty()
-    while k=True:
+    while True:
         with placeholder.container():
             end_from_time=time.time()
+            Iq=IQ_Option(email1,pword1)
+            Iq.connect() 
             data=Iq.get_candles("EURUSD", 15, 100, end_from_time)
             daf=pd.DataFrame(data)
             Iq.start_candles_stream("EURUSD", 15, 1)
@@ -29,12 +31,12 @@ def rsioutcome():
                 outcome1="Sell"
                 st.write("Sell success")
                 return outcome1,rsi100,rsi99
-                k=True
+                break
             elif rsi100>30 and rsi99<30:
                 outcome1="Buy"
                 st.write("Buy success")
                 return outcome1,rsi100,rsi99
-                k=True
+                break
             else:
                 st.write("Running ...")
                 time.sleep(15)
