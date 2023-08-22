@@ -11,6 +11,9 @@ import os
 
 @st.cache_data
 def rsioutcome():
+    rsi100=50
+    rsi99=50
+    st.write("start candle loop ",rsi100,": ",rsi99)
     placeholder = st.empty()
     while True:
         with placeholder.container():
