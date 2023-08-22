@@ -12,8 +12,8 @@ import os
 @st.cache_data
 def rsioutcome():
     placeholder = st.empty()
-    with placeholder.container():
-        while True:
+    while k=True:
+        with placeholder.container():
             end_from_time=time.time()
             data=Iq.get_candles("EURUSD", 15, 100, end_from_time)
             daf=pd.DataFrame(data)
@@ -29,16 +29,16 @@ def rsioutcome():
                 outcome1="Sell"
                 st.write("Sell success")
                 return outcome1,rsi100,rsi99
-                True
+                k=True
             elif rsi100>30 and rsi99<30:
                 outcome1="Buy"
                 st.write("Buy success")
                 return outcome1,rsi100,rsi99
-                True
+                k=True
             else:
                 st.write("Running ...")
                 time.sleep(15)
-                False
+                k=False
 
 st.set_page_config(page_title="AlphaSum Algorithm", page_icon=":moneybag:",layout="wide")
 st.header("🏦 IQ Option RSI TEST")
@@ -96,12 +96,12 @@ else:
     if iqch1==True:
         st.write(f"Log in successful")
         placeholder = st.empty()
-        with placeholder.container():
-             while True:           
+        while True:
+            with placeholder.container():
                 end_from_time=time.time()
                 expirations_mode=5
+                k=False
                 outcome,rsimax,rsimin=rsioutcome()
-                False
                 if outcome=="Sell":
                     check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
                     if check1:
