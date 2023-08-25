@@ -9,42 +9,6 @@ from datetime import date
 from datetime import datetime
 import os
 
-@st.cache_data
-def rsioutcome():
-    rsi100=50
-    rsi99=50
-    st.write("start candle loop ",rsi100,": ",rsi99)
-    placeholder = st.empty()
-    while True:
-        with placeholder.container():
-            end_from_time=time.time()
-            Iq=IQ_Option(email1,pword1)
-            Iq.connect() 
-            data=Iq.get_candles("EURUSD", 15, 100, end_from_time)
-            daf=pd.DataFrame(data)
-            Iq.start_candles_stream("EURUSD", 15, 1)
-            indicator_rsi = RSIIndicator(close=daf["close"], window=14)
-            daf["RSI"]=indicator_rsi.rsi()
-            #daf.to_csv("indicatordata.csv")
-            rsi100=(daf.iloc[99][9])
-            rsi99=(daf.iloc[98][9])
-            st.write("rsi100 : ",rsi100)
-            st.write("rsi99 : ",rsi99)
-            if rsi100<70 and rsi99>70:
-                outcome1="Sell"
-                st.write("Sell success")
-                return outcome1,rsi100,rsi99
-                break
-            elif rsi100>30 and rsi99<30:
-                outcome1="Buy"
-                st.write("Buy success")
-                return outcome1,rsi100,rsi99
-                break
-            else:
-                st.write("Running ...")
-                time.sleep(15)
-                k=False
-
 st.set_page_config(page_title="AlphaSum Algorithm", page_icon=":moneybag:",layout="wide")
 st.header("🏦 IQ Option RSI TEST")
 goaloptions=["EURUSD","EURJPY","EURGBP","AUDUSD","AUDJPY","AUDCAD","GBPJPY","GBPUSD","USDJPY"]
@@ -104,9 +68,27 @@ else:
         while True:
             with placeholder.container():
                 end_from_time=time.time()
+                data=Iq.get_candles("EURUSD", 15, 100, end_from_time)
+                daf=pd.DataFrame(data)
+                Iq.start_candles_stream("EURUSD", 15, 1)
+                indicator_rsi = RSIIndicator(close=daf["close"], window=14)
+                daf["RSI"]=indicator_rsi.rsi()
+                #daf.to_csv("indicatordata.csv")
+                rsi100=(daf.iloc[99][9])
+                rsi99=(daf.iloc[98][9])
+                st.write("rsi100 : ",rsi100)
+                st.write("rsi99 : ",rsi99)
+                if rsi100<70 and rsi99>70:
+                    outcome="Sell"
+                elif rsi100>30 and rsi99<30:
+                    outcome="Buy"
+                else:
+                    st.write("Running...")
+                    outcome="0"
+                    time.sleep(15)
+                    
+                end_from_time=time.time()
                 expirations_mode=5
-                k=False
-                outcome,rsimax,rsimin=rsioutcome()
                 if outcome=="Sell":
                     check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
                     if check1:
@@ -115,6 +97,7 @@ else:
                         check1_result="failed"
                         time.sleep(2)
                         check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
+                    st.write("Sell success")
                     status1,profpercent1=Iq.check_win_v4(id1)
                     st.subheader(" 1st Trade Previous Result ")
                     st.subheader(f"{status1}")
@@ -124,6 +107,22 @@ else:
                         Money1=initialmoney
                     else:
                         Money1=Money1*2.5
+                    my_blc2=Iq.get_balance()
+                    df2 = pd.DataFrame({"date":[today],
+                            "time":[current_time],
+                            "Initial_balance":[my_blc2],
+                            "stake_1":[Money1],
+                            "RSI position 1":[rsi99],
+                            "RSI position 2":[rsi100],
+                            "RSI outcome":[outcome],
+                            "status_1":[status1],
+                            "balance_after_stake":[my_blcafter],"Final_balance":[my_blc2]})
+                    df = pd.read_csv(f'Data_{email1}_{today}.csv')
+                    df3 = pd.concat([df,df2], ignore_index = True)
+                    df3.to_csv(f'Data_{email1}_{today}.csv',index=False)
+                    df_perc = pd.read_csv(f'Data_{email1}_{today}.csv')
+                    netprofit=my_blc2-int(df_perc['Initial_balance'].values[:1])
+                    st.write(f"Profit for today is ${netprofit:,}")
                 elif outcome=="Buy":
                     check1,id1=Iq.buy(Money1,goal,"call",expirations_mode)
                     if check1:
@@ -132,6 +131,7 @@ else:
                         check1_result="failed"
                         time.sleep(2)
                         check1,id1=Iq.buy(Money1,goal,"call",expirations_mode)
+                    st.write("Buy success")
                     status1,profpercent1=Iq.check_win_v4(id1)
                     st.subheader(" 1st Trade Previous Result ")
                     st.subheader(f"{status1}")
@@ -141,20 +141,22 @@ else:
                         Money1=initialmoney
                     else:
                         Money1=Money1*2.5
+                    df2 = pd.DataFrame({"date":[today],
+                            "time":[current_time],
+                            "Initial_balance":[my_blc2],
+                            "stake_1":[Money1],
+                            "RSI position 1":[rsi99],
+                            "RSI position 2":[rsi100],
+                            "RSI outcome":[outcome],
+                            "status_1":[status1],
+                            "balance_after_stake":[my_blcafter],"Final_balance":[my_blc2]})
+                    df = pd.read_csv(f'Data_{email1}_{today}.csv')
+                    df3 = pd.concat([df,df2], ignore_index = True)
+                    df3.to_csv(f'Data_{email1}_{today}.csv',index=False)
+                    df_perc = pd.read_csv(f'Data_{email1}_{today}.csv')
+                    netprofit=my_blc2-int(df_perc['Initial_balance'].values[:1])
+                    st.write(f"Profit for today is ${netprofit:,}")
                 else:
-                    st.write('condition not met')
-                my_blc2=Iq.get_balance()
-                df2 = pd.DataFrame({"date":[today],
-                        "time":[current_time],
-                        "Initial_balance":[my_blc2],
-                        "stake_1":[Money1],
-                        "RSI position 1":[rsimin],
-                        "RSI position 2":[rsimax],
-                        "RSI outcome":[outcome],
-                        "status_1":[status1],
-                        "balance_after_stake":[my_blcafter],"Final_balance":[my_blc2]})
-                df = pd.read_csv(f'Data_{email1}_{today}.csv')
-                df3 = pd.concat([df,df2], ignore_index = True)
-                df3.to_csv(f'Data_{email1}_{today}.csv',index=False)
+                    st.write('patience pays, relax...')
 
-                        
+                   
