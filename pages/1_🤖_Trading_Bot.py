@@ -98,16 +98,17 @@ else:
                         time.sleep(2)
                         check1,id1=Iq.buy(Money1,goal,"put",expirations_mode)
                     st.write("Sell success")
+
                     status1,profpercent1=Iq.check_win_v4(id1)
                     st.subheader(" 1st Trade Previous Result ")
                     st.subheader(f"{status1}")
                     st.markdown("---")
-                    my_blcafter=Iq.get_balance()
+                    my_blc2=Iq.get_balance()
                     if status1=="win":
                         Money1=initialmoney
                     else:
                         Money1=Money1*2.5
-                    my_blc2=Iq.get_balance()
+                    my_blcafter=my_blc2-Money1
                     df2 = pd.DataFrame({"date":[today],
                             "time":[current_time],
                             "Initial_balance":[my_blc2],
@@ -136,11 +137,12 @@ else:
                     st.subheader(" 1st Trade Previous Result ")
                     st.subheader(f"{status1}")
                     st.markdown("---")
-                    my_blcafter=Iq.get_balance()
+                    my_blc2=Iq.get_balance()
                     if status1=="win":
                         Money1=initialmoney
                     else:
                         Money1=Money1*2.5
+                    my_blcafter=my_blc2-Money1                        
                     df2 = pd.DataFrame({"date":[today],
                             "time":[current_time],
                             "Initial_balance":[my_blc2],
