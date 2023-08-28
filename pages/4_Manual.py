@@ -156,6 +156,7 @@ if st.button('Start Trading Robot'):
                         macd="Sell"
                         st.write("MACD : Sell")
                     else:
+                        macd="0"
                         st.write("MACD : Condition not met")
                 with right_column:
                     indicator_SMA = SMAIndicator(close=df["close"], window=20)
