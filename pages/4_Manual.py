@@ -76,14 +76,14 @@ if st.button('Start Trading Robot'):
             st.success("Logged in successfully!")
         else:
             st.error("Enter valid username and password")        
-        end_from_time=time.time()
-        a=((int(timeframe))*15)
-        data=Iq.get_candles("EURUSD", a, 100, end_from_time)
-        df=pd.DataFrame(data)
-        close100=(df.iloc[99][5])
         placeholder = st.empty()
         while True:
             with placeholder.container():
+                end_from_time=time.time()
+                a=((int(timeframe))*15)
+                data=Iq.get_candles("EURUSD", a, 100, end_from_time)
+                df=pd.DataFrame(data)
+                close100=(df.iloc[99][5])
                 left_column,right_column= st.columns(2)
                 with left_column:
                     indicator_bb = BollingerBands(close=df["close"], window=20, window_dev=2)
@@ -220,6 +220,8 @@ if st.button('Start Trading Robot'):
                         Money1=initialmoney
                     else:
                         Money1=Money1*2.5
+                else:
+                    st.write("No trade")
 else:
     st.write('Push Button to start Robot')
 
