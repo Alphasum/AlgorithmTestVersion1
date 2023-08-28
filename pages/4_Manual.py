@@ -77,7 +77,7 @@ if st.button('Start Trading Robot'):
         else:
             st.error("Enter valid username and password")        
         end_from_time=time.time()
-        a=((int(timeframe))*3)
+        a=((int(timeframe))*15)
         data=Iq.get_candles("EURUSD", a, 100, end_from_time)
         df=pd.DataFrame(data)
         close100=(df.iloc[99][5])
